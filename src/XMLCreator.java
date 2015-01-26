@@ -13,6 +13,10 @@ import java.io.FileWriter;
 public class XMLCreator {
 
     public Document createDocument() {
+        MatlabImport matlabImport = new MatlabImport("0170","01");
+
+
+
         Document document = DocumentHelper.createDocument();
         Element root = document.addElement( "root" );
 
