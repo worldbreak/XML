@@ -14,18 +14,23 @@ public class XMLCreator {
 
     public Document createDocument() {
         MatlabImport matlabImport = new MatlabImport("0170","01");
+        //for (int i=0;i<matlabImport.getAllCarsInDay())
+
+
 
 
 
         Document document = DocumentHelper.createDocument();
-        Element root = document.addElement( "root" );
+        Element routes = document.addElement( "routes" );
 
-        Element author1 = root.addElement( "author" )
-                .addAttribute( "name", "James" )
+        Element vType = routes.addElement( "vehicle" )
+                .addAttribute( "accel", Double.toString(0.8))
                 .addAttribute( "location", "UK" )
-                .addText( "James Strachan" );
+                .addText( "James Strachan" )
+                ;
 
-        Element author2 = root.addElement( "author" )
+
+        Element author2 = routes.addElement( "author" )
                 .addAttribute( "name", "Bob" )
                 .addAttribute( "location", "US" )
                 .addText( "Bob McWhirter" );
