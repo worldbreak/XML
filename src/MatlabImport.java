@@ -100,7 +100,8 @@ public class MatlabImport {
      }
 
  public double getSpeed(int time, int lane){
-  return speed[time][lane];
+
+     return speed[time][lane];
  }
 
  public int getNumCars(int time, int lane){
