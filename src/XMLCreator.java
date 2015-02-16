@@ -11,7 +11,10 @@ import java.io.FileWriter;
 import java.util.Random;
 
 public class XMLCreator {
-    MatlabImport matlabImport = new MatlabImport("0170","01");
+    String day = "01";
+    String month = "12";
+    String year = "2012";
+    MatlabImport matlabImport = new MatlabImport("0170",day,month,year);
 
     public static int getPoisson(double lambda) {
         double L = Math.exp(-lambda);
@@ -29,16 +32,21 @@ public class XMLCreator {
 
     public Element createVehicle(Element element, int actualCar, double time, int iTime, int lane){
         Random rnd = new Random();
+        double randomSpeed;
         double speed;
-        do
-            speed = 10*rnd.nextGaussian()+matlabImport.getSpeed(iTime,lane)/3.6;
-        while (speed>36);
+        do {
+            randomSpeed = rnd.nextGaussian();
 
+        }
+        while (randomSpeed>0 || randomSpeed<-5);
+
+        speed = randomSpeed + matlabImport.getSpeed(iTime, lane) / 3.6;
+        if (speed>36) speed=36;
          element.addAttribute("id", Integer.toString(actualCar))
                 .addAttribute("type", "type1")
                 .addAttribute("route", "wholeHighway")
                 .addAttribute("depart", Double.toString(time))
-                .addAttribute("departPos", Double.toString(0))
+                .addAttribute("departPos", Double.toString(95))
                 .addAttribute("departSpeed", Double.toString(speed))
                 .addAttribute("departLane",Integer.toString(lane));
          ;
@@ -64,7 +72,7 @@ public class XMLCreator {
         Element route = routes.addElement( "route" )
                 .addAttribute("id", "wholeHighway")
                 .addAttribute( "color", "1,1,0" )
-                .addAttribute("edges", "1a 2a 3a 4a 5a 6a 7a 8a 9a 10a 11a 12a 13a 14a 15a 16a 17a 18a 19a 20a 21a");
+                .addAttribute("edges", "7b 8b 9b 10b 11b");
 
 
         int actualCar = 0;

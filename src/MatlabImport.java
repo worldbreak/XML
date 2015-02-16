@@ -1,6 +1,7 @@
 import com.jmatio.io.MatFileReader;
 import com.jmatio.types.*;
 
+import java.lang.reflect.Array;
 import java.util.*;
 
 /**
@@ -14,19 +15,21 @@ public class MatlabImport {
     private Object[] pole = new Object[8];
     private double timestepfinal;
     private String datefinal;
+    private int numLames;
     private double gantry_idfinal;
     private double[][] lanesfinal;
     private double[][] losfinal;
     private double[][] countcars;
     private double[][] speed;
+    private double[][] lanesfinal1;
 
     public MatlabImport(){
     }
 
-    public MatlabImport(String Gate,String datein){
+    public MatlabImport(String Gate,String day, String month, String year){
      try {
 
-                MatFileReader matfilereader = new MatFileReader(Gate+"/sokp-"+Gate+"-201210"+datein+".mat");
+                MatFileReader matfilereader = new MatFileReader(Gate+"/sokp-"+Gate+"-"+year+month+day+".mat");
              //   MLArray aaa = matfilereader.getMLArray("data");
                 Map<String, MLArray> data = matfilereader.getContent();
                 Set<String> vars = data.keySet();
@@ -67,7 +70,8 @@ public class MatlabImport {
                     gantry_idfinal = gantry_id.get(0);
                     lanesfinal = ((MLDouble)lanes).getArray();
                     losfinal = ((MLDouble)los).getArray();
-
+                    lanesfinal1 = lanesfinal;
+                    numLames = Array.getLength(lanesfinal[0]);
              //       System.out.println("Datum: "+datefinal);
              //       System.out.println("Timestep: "+timestepfinal);
              //       System.out.println("Staniceni "+gantry_idfinal);
@@ -98,6 +102,9 @@ public class MatlabImport {
                 System.out.println(ex);
         }
      }
+ public int getNumLanes(){
+     return numLames;
+ }
 
  public double getSpeed(int time, int lane){
 
