@@ -12,7 +12,7 @@ import java.util.Random;
 
 public class XMLCreator {
     String day = "01";
-    String month = "12";
+    String month = "10";
     String year = "2012";
     MatlabImport matlabImport = new MatlabImport("0170",day,month,year);
 
@@ -78,24 +78,55 @@ public class XMLCreator {
         int actualCar = 0;
 
         for (int i=0;i<1440;i++){
-            double time = 60*i;
-            for (int j=0;j<matlabImport.getNumCars(i,0);j++) {
-                time = time+getPoisson(60/matlabImport.getNumCars(i,0));
-                Element vehicle = routes.addElement("vehicle");
-                vehicle = createVehicle(vehicle,actualCar,time,i,0);
-                actualCar++;
+            double time0 = 60*i;
+            double time1 = 60*i;
+            double countlane0 = matlabImport.getNumCars(i,0);
+            double countlane1 = matlabImport.getNumCars(i,1);
+            double delta0,delta1;
+            if (countlane0 == 0){
+                delta0 = 61;
+            }
+            else {
+                delta0 = (60/countlane0);
+            }
+            if (countlane1 == 0){
+                delta1 = 61;
+            }
+            else {
+                delta1 = (60/countlane1);
             }
 
-            for (int k=0;k<matlabImport.getNumCars(i,1);k++) {
-                time = time+getPoisson(60/matlabImport.getNumCars(i,1));
+            time0 = time0+delta0;
+            time1 = time1+delta1;
+            for (int j=0;j<(matlabImport.getNumCars(i,0)+matlabImport.getNumCars(i,1));j++) {
                 Element vehicle = routes.addElement("vehicle");
-                vehicle = createVehicle(vehicle,actualCar,time,i,1);
-                actualCar++;
+                if (time0==time1) {
+                    Element vehicle2 = routes.addElement("vehicle");
+                    vehicle = createVehicle(vehicle, actualCar, time0, i, 0);
+                    actualCar++;
+                    vehicle2 = createVehicle(vehicle2, actualCar, time1, i, 1);
+                    actualCar++;
+                    time0 = time0+delta0;
+                    time1 = time1+delta1;
+                    j++;
+                }
+                else if (time0 < time1){
+                    vehicle = createVehicle(vehicle, actualCar, time0, i, 0);
+                    time0 = time0+delta0;
+                    actualCar++;
+                }
+                else {
+                    vehicle = createVehicle(vehicle, actualCar, time1, i, 1);
+                    time1 = time1+delta1;
+                    actualCar++;
+
+                }
+
             }
        //  pocet = pocet + matlabImport.getNumCars(i,1);
 
         }
-       // System.out.println(pocet);
+       System.out.println(matlabImport.getAllCarsInDay());
 
 
 
